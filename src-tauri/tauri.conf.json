@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicedoc/tauri/v2/core/tauri-utils/schema.json",
+  "productName": "fadix",
+  "version": "0.1.0",
+  "identifier": "com.fadix.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Fadix",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  }
+}
