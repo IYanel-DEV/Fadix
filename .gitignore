@@ -1,0 +1,9 @@
+node_modules/
+target/
+dist/
+*.tmp.fadix
+*.bak.*
+current_task.json
+workspace_state.json
+package-lock.json
+Prompt.txt
