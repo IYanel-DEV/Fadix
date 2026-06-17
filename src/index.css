@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.zinc.800') transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.06);
+    border-radius: 4px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  body {
+    @apply bg-[#0a0b10] text-zinc-100 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "salt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Subtle ambient glow */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 40% at 50% -10%, rgba(99,102,241,0.05), transparent);
+    z-index: 0;
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Smooth focus ring */
+  *:focus-visible {
+    outline: none;
+    ring: 2px solid rgba(99,102,241,0.3);
+  }
+
+  /* Selection color */
+  ::selection {
+    background: rgba(99,102,241,0.15);
+    color: inherit;
+  }
+}
+
+@layer components {
+  .premium-border {
+    @apply border border-transparent;
+    border-color: rgba(255,255,255,0.06);
+  }
+
+  .premium-surface {
+    @apply bg-[#12131a];
+  }
+
+  .premium-surface-hover {
+    @apply hover:bg-[#191a24] transition-colors duration-150;
+  }
+
+  .premium-input {
+    @apply bg-[#12131a] border border-[#232533] rounded-xl px-4 py-3 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-[#4f6ef7]/40 focus:ring-1 focus:ring-[#4f6ef7]/15 transition-all duration-200;
+  }
+
+  .premium-btn {
+    @apply inline-flex items-center justify-center rounded-lg px-3 py-2 text-xs font-medium transition-all duration-150 active:scale-[0.97];
+  }
+
+  .premium-btn-primary {
+    @apply premium-btn bg-[#4f6ef7] text-white hover:bg-[#5d7af8] shadow-[0_2px_12px_rgba(79,110,247,0.2)];
+  }
+
+  .premium-btn-ghost {
+    @apply premium-btn text-zinc-500 hover:text-zinc-300 hover:bg-[#191a24];
+  }
+
+  .premium-panel {
+    @apply bg-[#0e0f16] border border-[#1e1f2b] rounded-xl shadow-premium;
+  }
+}

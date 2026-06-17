@@ -34,4 +34,52 @@ export interface LlmStreamEvent {
   error: string | null;
 }
 
-export type Provider = "nvidia" | "local";
+export type Provider = "nvidia" | "local" | "custom";
+
+export type AgentStatus = "Idle" | "Prompting" | "Mutating" | "Error" | "processing";
+
+export interface AppConfig {
+  nvidiaApiKey: string;
+  activeProvider: string;
+  activeModel: string;
+  localBaseUrl: string;
+  customBaseUrl: string;
+  customApiKey: string;
+}
+
+export interface AgentStatusEntry {
+  status: AgentStatus;
+  message: string;
+}
+
+export interface AttachedFile {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  data: string;
+  preview?: string;
+}
+
+export interface LogEntry {
+  id: number;
+  agent: string;
+  level: string;
+  message: string;
+  timestamp: number;
+}
+
+export interface ConversationEntry {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: number;
+}
+
+export interface ChatSession {
+  id: string;
+  name: string;
+  messages: ConversationEntry[];
+  createdAt: number;
+  updatedAt: number;
+}

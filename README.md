@@ -1,109 +1,173 @@
 # Fadix
 
-A local-first, multi-agent desktop code assistant built with Tauri 2.0, React, and Rust. Fadix runs a concurrent, role-based agent workflow on your project directory, routing LLM requests between NVIDIA NIM cloud APIs and local Ollama/LM Studio instances.
+**Multi-agent AI code assistant** — orchestrates a team of specialized LLM agents to understand, plan, and implement software changes directly in your project folder.
 
-## What It Does
+![Architect](https://img.shields.io/badge/agent-architect-violet)
+![Coder](https://img.shields.io/badge/agent-coder-emerald)
+![UI Specialist](https://img.shields.io/badge/agent-ui--specialist-sky)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-Fadix orchestrates four specialized AI agents to understand, plan, code, and validate changes against your codebase:
+---
 
-- **The Architect** — Parses your request, scans the workspace, generates an execution blueprint
-- **The Coder** — Reads the blueprint, writes code blocks, performs targeted file mutations
-- **The Backend Specialist** — Validates architectural endpoints, state logic, data structures
-- **The UI Specialist** — Reviews layout, Tailwind tokens, component integration
+## Overview
 
-All agents communicate through a shared state ledger, executing sequentially through a task pipeline with automatic remediation on failure.
+Fadix runs a structured 3-agent pipeline inside your browser:
 
-## Architecture
+1. **Architect** — analyzes your request, scans the workspace, and creates an execution plan
+2. **Coder** — implements backend/logic files (Python, TypeScript, Rust, Go, etc.)
+3. **UI Specialist** — designs frontend files (CSS, TSX, JSX, HTML, layouts)
 
-| Layer | Technology |
-|---|---|
-| Desktop Runtime | Tauri 2.0 (Rust) |
-| Frontend | React 19 + TypeScript + Zustand |
-| Styling | Tailwind CSS + shadcn/ui |
-| LLM Streaming | SSE via `reqwest` + Tauri event channel |
-| File Engine | Atomic writes with backup-on-fail |
-| State Machine | Tokio async orchestrator with mpsc channels |
+All file writes go through the browser's File System Access API — your code never leaves your machine. The LLM runs via NVIDIA NIM cloud API (or your own OpenAI-compatible endpoint).
+
+---
 
 ## Features
 
-- **Hybrid LLM Router** — Toggle between NVIDIA NIM cloud and local Ollama/LM Studio at runtime
-- **Real-time Streaming** — Token-by-token LLM output via Tauri event bus
-- **Atomic File Writes** — Temp file → fsync → rename with automatic rollback
-- **Workspace Scanning** — Async recursive directory walker with smart ignore filters
-- **Binary Detection** — Rejects non-text files before they reach agent context
-- **Event-Driven UI** — Phase changes, agent status, and streaming tokens broadcast live to React
+- **Multi-agent orchestration** — structured 3-phase pipeline with role-based prompts
+- **Live streaming** — token-by-token output with real-time agent status
+- **Atomic file writes** — creates directories as needed, writes directly to disk
+- **Workspace-aware** — agent sees your full file tree before planning changes
+- **Per-project chat history** — conversations persist per workspace in localStorage
+- **Web search integration** — optional Tavily API key for tasks needing current info
+- **Hybrid LLM routing** — NVIDIA NIM cloud, local Ollama/LM Studio, or any OpenAI-compatible endpoint
+- **Edit & resend** — revise your prompts mid-conversation
+- **Premium dark theme** — polished UI with indigo accents, subtle glow effects
+
+---
 
 ## Quick Start
 
-### Windows
+### Prerequisites
 
-```powershell
-git clone https://github.com/YOUR_USERNAME/fadix.git
-cd fadix
-setup.bat
-```
+- [Node.js](https://nodejs.org/) 18+ 
+- An NVIDIA API key ([free tier available](https://build.nvidia.com/explore/discover)) — or any OpenAI-compatible LLM endpoint
 
-### macOS / Linux
+### Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/fadix.git
+git clone https://github.com/IYanel-DEV/Fadix.git
 cd fadix
-chmod +x setup.sh
-./setup.sh
-```
-
-### Manual Setup
-
-```bash
-# Prerequisites: Git, Node.js 18+, Rust (via rustup)
-
 npm install
-npm install -D @tauri-apps/cli@latest
-npm run desktop
 ```
+
+### Run
+
+```bash
+npm run dev
+```
+
+This starts both:
+- **Vite dev server** → `http://localhost:5173` (frontend)
+- **Express proxy server** → `http://localhost:3001` (LLM orchestration)
+
+Open `http://localhost:5173`, open a project folder, and start building.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+Serves the static build via Vite preview:
+
+```bash
+npm run preview
+```
+
+---
+
+## Usage
+
+1. **Open a folder** — click "Open Folder" in the sidebar and select your project
+2. **Enter a task** — describe what to build or change (e.g., "Add a dark mode toggle", "Create a REST API with Express")
+3. **Watch the pipeline** — the Architect analyzes, then Coder and UI Specialist implement in parallel
+4. **Files appear on disk** — every file block is written atomically; the file tree refreshes automatically
+
+### Example Prompts
+
+- "Create a Python script that scrapes Hacker News and saves results to a CSV"
+- "Add a responsive navbar component with Tailwind CSS"
+- "Build a todo app with Express backend and vanilla JS frontend"
+- "Fix the error handling in server.js"
+
+---
 
 ## Project Structure
 
 ```
 fadix/
-├── src-tauri/              # Rust backend
-│   ├── src/
-│   │   ├── agents/         # Multi-agent orchestrator
-│   │   ├── commands/       # Tauri command handlers
-│   │   ├── llm/            # LLM provider router
-│   │   ├── state/          # State ledger schemas
-│   │   └── workspace/      # File engine (scan, read, write)
-│   └── Cargo.toml
-├── src/                    # React frontend
-│   ├── lib/                # IPC bridge + types
-│   ├── stores/             # Zustand state stores
-│   └── hooks/              # React hooks
-├── setup.bat               # Windows setup
-├── setup.sh                # Unix/macOS setup
+├── server.js                  # Express proxy — LLM orchestration engine
+├── src/
+│   ├── App.tsx                # Root layout with sidebar + main panel
+│   ├── index.css              # Premium dark theme + utility classes
+│   ├── main.tsx               # React entry point
+│   ├── components/
+│   │   ├── agents/
+│   │   │   ├── AgentMonitor.tsx      # Pipeline activity log + status
+│   │   │   ├── AgentStatusCard.tsx   # Per-agent status indicator
+│   │   │   └── PromptInput.tsx       # Chat input with file attachments
+│   │   ├── layout/
+│   │   │   ├── MainContent.tsx       # Chat view, message bubbles, file blocks
+│   │   │   ├── MainPanel.tsx         # Legacy chat panel
+│   │   │   └── Sidebar.tsx           # File tree, project switcher
+│   │   └── llm/
+│   │       └── ProviderToggle.tsx    # LLM provider config panel
+│   ├── lib/
+│   │   ├── sound.ts           # Completion sound effects
+│   │   ├── types.ts           # TypeScript type definitions
+│   │   └── workspaceEngine.ts # File System Access API wrapper
+│   ├── stores/
+│   │   ├── llmStore.ts        # Chat sessions, streaming, agent state
+│   │   └── workspaceStore.ts  # File tree, disk I/O, project registry
+│   └── hooks/
+│       └── useLlmStream.ts    # Stream hook for PromptInput
+├── tailwind.config.js         # Custom theme tokens
+├── vite.config.ts             # Vite + React + API proxy config
+├── postcss.config.js          # PostCSS/Tailwind setup
 └── package.json
 ```
+
+---
 
 ## Configuration
 
 ### LLM Providers
 
-**NVIDIA NIM (Cloud)**
-- Endpoint: `https://integrate.api.nvidia.com/v1/chat/completions`
-- Requires API key (`nvapi-...`)
+Open the configuration panel (gear icon in the header):
 
-**Ollama (Local)**
-- Endpoint: `http://localhost:11434/v1/chat/completions`
-- No authentication required
+| Provider | Endpoint | Auth |
+|---|---|---|
+| **NVIDIA NIM** (cloud) | `integrate.api.nvidia.com/v1` | API key (`nvapi-...`) |
+| **Ollama** (local) | `http://localhost:11434/v1` | None |
+| **LM Studio** (local) | `http://localhost:1234/v1` | None |
+| **Custom** | any OpenAI-compatible | Bearer token |
 
-**LM Studio (Local)**
-- Endpoint: `http://localhost:1234/v1/chat/completions`
-- No authentication required
+### Per-Agent Models
 
-### Supported Models
+Each agent (Architect, Coder, UI Specialist) can use a different model via dropdowns in the sidebar — useful for routing planning to a stronger model and generation to a faster one.
 
-Any model available through your chosen provider. Examples:
-- NVIDIA NIM: `meta/llama-3.1-8b-instruct`, `mistralai/mistral-7b-instruct-v0.3`
-- Ollama: `llama3.1`, `codellama`, `mistral`
+### Web Search
+
+Provide a [Tavily](https://tavily.com/) API key to enable web search. The Architect will automatically search the web when your task references current events, libraries, or documentation.
+
+### Shutdown
+
+Click the red "Shutdown Server" button in settings to stop the Express proxy.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, TypeScript, Zustand |
+| Styling | Tailwind CSS, custom premium theme |
+| Build | Vite 8 |
+| LLM Proxy | Express.js, Server-Sent Events |
+| File I/O | File System Access API |
+| Sound | Web Audio API (TinySound) |
+
+---
 
 ## License
 
