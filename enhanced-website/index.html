@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — AppFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ── AUTH CONTAINER ── -->
+  <div id="authContainer" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="url(#logoGrad)"/>
+            <path d="M8 20V8h4l4 6 4-6h4v12h-4v-7l-4 6-4-6v7H8z" fill="white"/>
+            <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+          </svg>
+        </div>
+        <h1 class="auth-title">AppFlow</h1>
+        <p class="auth-subtitle">Sign in to your workspace</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form active">
+        <div class="input-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="auth-btn">Sign In</button>
+        <p class="auth-switch">Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form">
+        <div class="input-group">
+          <label for="regName">Full Name</label>
+          <input type="text" id="regName" placeholder="John Doe" required>
+        </div>
+        <div class="input-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="input-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" placeholder="••••••••" required minlength="6">
+        </div>
+        <button type="submit" class="auth-btn">Create Account</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="dashboard" class="dashboard" style="display:none">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="url(#logoGrad2)"/>
+            <path d="M8 20V8h4l4 6 4-6h4v12h-4v-7l-4 6-4-6v7H8z" fill="white"/>
+            <defs><linearGradient id="logoGrad2" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+          </svg>
+          <span>AppFlow</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="nav-item" data-tab="files">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Files
+        </button>
+        <button class="nav-item" data-tab="notes">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Notes
+        </button>
+        <button class="nav-item" data-tab="profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- ── TAB: Search ── -->
+      <section id="tab-search" class="tab-content active">
+        <div class="tab-header">
+          <h2>Web Search</h2>
+          <p>Search the web for information, code, or documentation</p>
+        </div>
+        <div class="search-bar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search anything...">
+          <button id="searchBtn">Search</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </section>
+
+      <!-- ── TAB: Files ── -->
+      <section id="tab-files" class="tab-content">
+        <div class="tab-header">
+          <h2>File Manager</h2>
+          <p>Browse, create, edit, and delete files</p>
+        </div>
+        <div class="file-actions">
+          <button id="newFileBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New File
+          </button>
+        </div>
+        <div id="fileList" class="file-list"></div>
+        <div id="fileEditor" class="file-editor" style="display:none">
+          <div class="editor-header">
+            <span id="editorFilename" class="editor-filename"></span>
+            <div class="editor-actions">
+              <button id="saveFileBtn" class="editor-btn primary">Save</button>
+              <button id="closeEditorBtn" class="editor-btn">Close</button>
+            </div>
+          </div>
+          <textarea id="editorContent" spellcheck="false"></textarea>
+        </div>
+      </section>
+
+      <!-- ── TAB: Notes ── -->
+      <section id="tab-notes" class="tab-content">
+        <div class="tab-header">
+          <h2>Notes</h2>
+          <p>Create and manage your notes</p>
+        </div>
+        <div class="file-actions">
+          <button id="newNoteBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Note
+          </button>
+        </div>
+        <div id="notesList" class="notes-grid"></div>
+      </section>
+
+      <!-- ── TAB: Profile ── -->
+      <section id="tab-profile" class="tab-content">
+        <div class="tab-header">
+          <h2>Profile</h2>
+          <p>Your account settings</p>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAvatar">JD</div>
+          <div class="profile-info">
+            <h3 id="profileName">John Doe</h3>
+            <p id="profileEmail">john@example.com</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
